@@ -27,19 +27,24 @@ description: "This endpoint extracts the price, brand, and name of a product"
 The data returned from the extraction request.
 
 {" "}
+
 <Expandable title="Toggle object">
   <ResponseField name="result" type="object">
-    <ResponseField name="product" type="object">
-      <ResponseField name="brand" type="string">
-        The product brand
+    <Expandable title="Toggle object">
+      <ResponseField name="product" type="object">
+        <Expandable title="Toggle object">
+          <ResponseField name="brand" type="string">
+            The product brand
+          </ResponseField>
+          <ResponseField name="title" type="string">
+            The product name or title
+          </ResponseField>
+          <ResponseField name="price" type="number">
+            The product price
+          </ResponseField>
+        </Expandable>
       </ResponseField>
-      <ResponseField name="title" type="string">
-        The product name or title
-      </ResponseField>
-      <ResponseField name="price" type="number">
-        The product price
-      </ResponseField>
-    </ResponseField>
+    </Expandable>
   </ResponseField>
 </Expandable>
 
