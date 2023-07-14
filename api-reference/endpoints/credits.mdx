@@ -42,15 +42,9 @@ Payment links to purchase more credit packs.
 <RequestExample>
 
 ```bash Example Request
-curl --location --request GET 'https://api.mintlify.com/api/user' \
---header 'Content-Type: application/json' \
---header 'Authorization: Token <token>' \
---data-raw '{
-    "user_group_id": "example_1",
-    "name": "Example 1",
-    "mapping": {"40": "213", "134": "386"},
-    "properties": {"filterValue": "value"}
-}'
+curl -s -X GET 'https://api-preview.isomeric.ai/credits' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer <token>'
 ```
 
 </RequestExample>
@@ -59,14 +53,13 @@ curl --location --request GET 'https://api.mintlify.com/api/user' \
 
 ```json Response
 {
-  "success": 1,
-  "new_user_group": true,
-  "user_group": {
-    "team_id": 3,
-    "token": "<user_group_token_to_auth_dashboard>",
-    "name": "Example 1",
-    "provided_id": "example_1"
-  }
+  "buyMoreCredits": {
+    "Isomeric Credits - Growth 150k": "https://buy.stripe.com/eVag1ZeoI7Le5vGcMO?prefilled_email=foo%40example.com",
+    "Isomeric Credits - Solo 10k": "https://buy.stripe.com/5kA7vt5Sce9CcY89AA?prefilled_email=foo%40example.com",
+    "Isomeric Credits - Startup 25k": "https://buy.stripe.com/eVa03194oe9C4rC7st?prefilled_email=foo%40example.com"
+  },
+  "key": "<token>",
+  "remaining": 500
 }
 ```
 
