@@ -38,7 +38,10 @@
     },
     {
       "group": "API Documentation",
-      "pages": ["api-reference/authentication"]
+      "pages": [
+        "api-reference/authentication",
+        "api-reference/credits"
+      ]
     },
     {
       "group": "Data Extraction",
