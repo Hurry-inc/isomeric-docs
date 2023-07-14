@@ -4,6 +4,12 @@ api: "GET https://api-preview.isomeric.ai/credits"
 description: "This endpoint returns the credit balance for the authenticating API key"
 ---
 
+### Headers
+
+<ParamField header="Authorization" required="true">
+  Use your API key to authenticate the request.
+</ParamField>
+
 ### Response
 
 <ResponseField name="key" type="string">
