@@ -14,33 +14,15 @@ description: "This endpoint returns the credit balance for the authenticating AP
   The number of credits left.
 </ResponseField>
 
-<ResponseField name="buy_more" type="object">
+<ResponseField name="buyMoreCredits" type="object">
 
 Payment links to purchase more credit packs.
 
 <Expandable title="Toggle object">
 
-<ResponseField name="team_id" type="number">
-  This is the internal ID for this user group. You don't need to record this
-  information, since you will not need to use it.
-</ResponseField>
-
-<ResponseField name="token" type="string">
-  This is the user group token (userGroupToken or USER_GROUP_TOKEN) that will be
-  used to identify which user group is viewing the dashboard. You should save
-  this on your end to use when rendering an embedded dashboard.
-</ResponseField>
-
-<ResponseField name="name" type="string">
-  This is the name of the user group provided in the request body.
-</ResponseField>
-
-<ResponseField name="provided_id" type="string">
-  This is the user_group_id provided in the request body.
-</ResponseField>
-
-<ResponseField name="properties" type="JSON or null">
-  This is the properties object if it was provided in the request body
+<ResponseField name="Plan Name" type="string">
+  Each payment link will be returned as a key-value pair, where the key is the
+  package name and the value is the URL to purchase that pack.
 </ResponseField>
 
 </Expandable>
