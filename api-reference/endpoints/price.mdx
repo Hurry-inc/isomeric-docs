@@ -4,6 +4,16 @@ api: "POST https://api-preview.isomeric.ai/price"
 description: "This endpoint extracts the price, brand, and name of a product"
 ---
 
+### Headers
+
+<ParamField
+  header="Authorization"
+  required="true"
+  initialValue="Bearer iso_abc123"
+>
+  Use your API key to authenticate the request.
+</ParamField>
+
 ### Body
 
 <ParamField body="url" type="string">
