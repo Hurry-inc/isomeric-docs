@@ -4,40 +4,19 @@ api: "GET https://api-preview.isomeric.ai/credits"
 description: "This endpoint returns the credit balance for the authenticating API key"
 ---
 
-### Body
-
-<ParamField body="name" type="string">
-  This is the name of the user group.
-</ParamField>
-
-<ParamField body="user_group_id" type="string">
-  This is the ID you use to identify this user group in your database.
-</ParamField>
-
-<ParamField body="mapping" type="object">
-  This is a JSON mapping of schema id to either the data source that this user
-  group should be associated with or id of the datasource you provided when
-  creating it.
-</ParamField>
-
-<ParamField body="properties" type="object">
-  This is a JSON object for properties assigned to this user group. These will
-  be accessible through variables in the dashboards and SQL editor
-</ParamField>
-
 ### Response
 
-<ResponseField name="success" type="number">
-  Indicates whether the call was successful. 1 if successful, 0 if not.
+<ResponseField name="key" type="string">
+  Echos back the API key used to authenticate.
 </ResponseField>
 
-<ResponseField name="new_user_group" type="boolean">
-  Indicates whether a new user group was created.
+<ResponseField name="remaining" type="number">
+  The number of credits left.
 </ResponseField>
 
-<ResponseField name="user_group" type="object">
+<ResponseField name="buy_more" type="object">
 
-The contents of the user group
+Payment links to purchase more credit packs.
 
 <Expandable title="Toggle object">
 
