@@ -43,9 +43,9 @@
     {
       "group": "Data Extraction",
       "pages": [
-        "api-reference/endpoint/price",
-        "api-reference/endpoint/advanced",
-        "api-reference/endpoint/credits"
+        "api-reference/endpoints/price",
+        "api-reference/endpoints/advanced",
+        "api-reference/endpoints/credits"
       ]
     }
   ],
