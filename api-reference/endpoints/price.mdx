@@ -6,9 +6,8 @@ description: "This endpoint extracts the price, brand, and name of a product"
 
 ### Body
 
-<ParamField body="current_token" type="string">
-  This is the current user group token you have for the user group that you want
-  to rotate.
+<ParamField body="url" type="string">
+  The URL of the product page you'd like to extract data from.
 </ParamField>
 
 ### Response
@@ -57,12 +56,9 @@ The contents of the user group
 <RequestExample>
 
 ```bash Example Request
-curl --location --request POST 'https://api.mintlify.com/api/user' \
---header 'Content-Type: application/json' \
---header 'Authorization: Token <token>' \
---data-raw '{
-    "current_token": ""
-}'
+curl -s 'https://api-preview.isomeric.ai/price' \
+-H 'Authorization: Bearer <token>' \
+-d 'url=https://example.com'
 ```
 
 </RequestExample>
