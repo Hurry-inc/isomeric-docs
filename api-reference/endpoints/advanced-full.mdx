@@ -74,9 +74,27 @@ The data returned from the extraction request.
 <RequestExample>
 
 ```bash Example Request
-curl -s 'https://api-preview.isomeric.ai/price' \
--H 'Authorization: Bearer <token>' \
--d 'url=https://www.lego.com/en-us/product/ninjago-city-markets-71799'
+curl -H "Authorization: Bearer <token>" -d '{
+    "url": "https://auraframes.com/digital-frames/color/carver-mat",
+    "format": {
+        "type": "object",
+        "properties": {
+            "title": { "type": "string" },
+            "brand": { "type": "string" },
+            "price": {
+                "type": "string",
+                "prompt": "the price of the product. 'None' if it does not exist in the input"
+            },
+            "currency_code": {
+                "type": "string"
+            },
+            "color": {
+                "type": "string",
+                "prompt": "The color of the product. 'None' if it does not exist in the input."
+            }
+        }
+    }
+}' https://api-preview.isomeric.ai/advanced
 ```
 
 </RequestExample>
@@ -86,19 +104,14 @@ curl -s 'https://api-preview.isomeric.ai/price' \
 ```json Response
 {
   "credits": {
-    "remaining": 198
+    "remaining": 4832
   },
   "data": {
-    "message": "Finished inference request with run_id: da2904f4-e3e8-499f-b95d-f486c4954caf.",
-    "result": {
-      "product": {
-        "brand": "LEGO®",
-        "price": "369.99",
-        "title": "NINJAGO® City Markets"
-      }
-    },
-    "run_id": "da2904f4-e3e8-499f-b95d-f486c4954caf",
-    "run_time_ms": 1789.159297943115
+    "brand": "Aura",
+    "color": "Gravel with White Mat",
+    "currency_code": "USD",
+    "price": "179",
+    "title": "Carver Mat"
   }
 }
 ```
