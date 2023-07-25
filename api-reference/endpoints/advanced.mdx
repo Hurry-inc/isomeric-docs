@@ -4,8 +4,103 @@ api: "POST https://api-preview.isomeric.ai/advanced"
 description: "This endpoint extracts arbitrary data based on the schema provided"
 ---
 
-Coming soon!
+### Headers
+
+<ParamField
+  header="Authorization"
+  required="true"
+  initialValue="Bearer iso_abc123"
+>
+  Use your API key to authenticate the request.
+</ParamField>
 
 ### Body
 
+<ParamField body="JSON request" type="object" required="true" children="A JSON object representing the request you are making to the Isomeric extraction engine.">
+  <Expandable title="Toggle object">
+    <ParamField body="url" type="string" required="true">
+      The URL of the product page you'd like to extract data from.
+    </ParamField>
+
+    <ParamField body="format" type="object" required="true">
+      The schema representing the data you would like extracted.
+
+      See our [guide on writing schemas](/#todo) for more info.
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
 ### Response
+
+<ResponseField name="credits" type="object">
+  Info about API credit usage for this request.
+
+  <Expandable title="Toggle object">
+    <ResponseField name="remaining" type="number">
+      The number of credits remaining after this call
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="data" type="object">
+
+The data returned from the extraction request.
+
+{" "}
+
+<Expandable title="Toggle object">
+  <ResponseField name="keys..." type="object">
+    The `data` field will contain a JSON object with keys and values mapped to
+    your original schema.
+  </ResponseField>
+</Expandable>
+
+</ResponseField>
+
+<RequestExample>
+
+```bash Example Request
+curl -H "Authorization: Bearer <token>" -d '{
+    "url": "https://auraframes.com/digital-frames/color/carver-mat",
+    "format": {
+        "type": "object",
+        "properties": {
+            "title": { "type": "string" },
+            "brand": { "type": "string" },
+            "price": {
+                "type": "string",
+                "prompt": "the price of the product. 'None' if it does not exist in the input"
+            },
+            "currency_code": {
+                "type": "string"
+            },
+            "color": {
+                "type": "string",
+                "prompt": "The color of the product. 'None' if it does not exist in the input."
+            }
+        }
+    }
+}' https://api-preview.isomeric.ai/advanced
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "credits": {
+    "remaining": 4832
+  },
+  "data": {
+    "brand": "Aura",
+    "color": "Gravel with White Mat",
+    "currency_code": "USD",
+    "price": "179",
+    "title": "Carver Mat"
+  }
+}
+```
+
+</ResponseExample>
