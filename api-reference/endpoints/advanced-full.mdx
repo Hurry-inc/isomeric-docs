@@ -4,52 +4,58 @@ api: "POST https://api-preview.isomeric.ai/advanced"
 description: "This endpoint extracts arbitrary data based on the schema provided"
 ---
 
+### Headers
+
+<ParamField
+  header="Authorization"
+  required="true"
+  initialValue="Bearer iso_abc123"
+>
+  Use your API key to authenticate the request.
+</ParamField>
+
 ### Body
 
-<ParamField body="current_token" type="string">
-  This is the current user group token you have for the user group that you want
-  to rotate.
+<ParamField body="url" type="string" required="true">
+  The URL of the product page you'd like to extract data from.
 </ParamField>
 
 ### Response
 
-<ResponseField name="success" type="number">
-  Indicates whether the call was successful. 1 if successful, 0 if not.
+<ResponseField name="credits" type="object">
+  Info about API credit usage for this request.
+
+  <Expandable title="Toggle object">
+    <ResponseField name="remaining" type="number">
+      The number of credits remaining after this call
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
-<ResponseField name="user_group" type="object">
+<ResponseField name="data" type="object">
 
-The contents of the user group
+The data returned from the extraction request.
+
+{" "}
 
 <Expandable title="Toggle object">
-
-<ResponseField name="team_id" type="number">
-  This is the internal ID for this user group. You don't need to record this
-  information, since you will not need to use it.
-</ResponseField>
-
-<ResponseField name="token" type="string">
-  This is the user group token (userGroupToken or USER_GROUP_TOKEN) that will be
-  used to identify which user group is viewing the dashboard. You should save
-  this on your end to use when rendering an embedded dashboard.
-</ResponseField>
-
-<ResponseField name="name" type="string">
-  This is the name of the user group provided in the request body.
-</ResponseField>
-
-<ResponseField name="provided_id" type="string">
-  This is the user_group_id provided in the request body.
-</ResponseField>
-
-<ResponseField name="api_environment_tag" type="JSON or null">
-  This is the environment tag of the user group. Possible values are 'Customer'
-  and 'Testing'. User group id's must be unique to each environment, so you can
-  not create multiple user groups with with same id. If you have a production
-  customer and a test user group with the same id, you will be required to label
-  one as 'Customer' and another as 'Testing'
-</ResponseField>
-
+  <ResponseField name="result" type="object">
+    <Expandable title="Toggle object">
+      <ResponseField name="product" type="object">
+        <Expandable title="Toggle object">
+          <ResponseField name="brand" type="string">
+            The product brand
+          </ResponseField>
+          <ResponseField name="title" type="string">
+            The product name or title
+          </ResponseField>
+          <ResponseField name="price" type="number">
+            The product price
+          </ResponseField>
+        </Expandable>
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
 </Expandable>
 
 </ResponseField>
@@ -57,12 +63,9 @@ The contents of the user group
 <RequestExample>
 
 ```bash Example Request
-curl --location --request POST 'https://api.mintlify.com/api/user' \
---header 'Content-Type: application/json' \
---header 'Authorization: Token <token>' \
---data-raw '{
-    "current_token": ""
-}'
+curl -s 'https://api-preview.isomeric.ai/price' \
+-H 'Authorization: Bearer <token>' \
+-d 'url=https://www.lego.com/en-us/product/ninjago-city-markets-71799'
 ```
 
 </RequestExample>
@@ -71,12 +74,20 @@ curl --location --request POST 'https://api.mintlify.com/api/user' \
 
 ```json Response
 {
-  "success": 1,
-  "user_group": {
-    "team_id": 3,
-    "token": "<user_group_token_to_auth_dashboard>",
-    "name": "Example 1",
-    "provided_id": "example_1"
+  "credits": {
+    "remaining": 198
+  },
+  "data": {
+    "message": "Finished inference request with run_id: da2904f4-e3e8-499f-b95d-f486c4954caf.",
+    "result": {
+      "product": {
+        "brand": "LEGO®",
+        "price": "369.99",
+        "title": "NINJAGO® City Markets"
+      }
+    },
+    "run_id": "da2904f4-e3e8-499f-b95d-f486c4954caf",
+    "run_time_ms": 1789.159297943115
   }
 }
 ```
