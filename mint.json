@@ -29,14 +29,6 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
-    },
-    {
-      "group": "Essentials",
-      "pages": ["essentials/markdown", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation"]
-    },
-    {
       "group": "API Documentation",
       "pages": [
         "api-reference/authentication",
@@ -50,6 +42,14 @@
         "api-reference/endpoints/advanced",
         "api-reference/endpoints/credits"
       ]
+    },
+    {
+      "group": "Get Started",
+      "pages": ["introduction", "quickstart", "development"]
+    },
+    {
+      "group": "Essentials",
+      "pages": ["essentials/markdown", "essentials/code", "essentials/images", "essentials/settings", "essentials/navigation"]
     }
   ],
   "footerSocials": {
