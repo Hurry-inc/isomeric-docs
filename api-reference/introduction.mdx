@@ -1,23 +1,23 @@
 ---
 title: "Introduction"
-description: "Turn any website into JSON"
+description: "Turn any website into JSON."
 ---
 
-Behind every request is a powerful LLM trained on billions of tokens of website data. For every json value you request is a prompt to our LLM. Please read the [prompting](./prompting) section for more details on prompt design.
+Behind every request is a powerful LLM trained on billions of tokens of website data. Every JSON value you request is a prompt to our LLM. Please read the [prompting](./prompting) section for more details on the prompt design.
 
 ## Expectations
-The Isomeric LLM is has a few gotchas that should be understood before diving into prompt design.
+The Isomeric LLM has a few gotchas that should be understood before diving into prompt design.
 
 ### Speed
-There are two distinct tasks behind every request you make to Isomeric. Content retrevial and parsing.
+There are two distinct tasks behind every request you make to Isomeric. Content retrieval and parsing.
 
-Content retrevial means loading a website, waiting for javascript to load, parsing its content and returning it. The speed of this can vary depending on the website being acted on and its level of ant-scraping measures its put it place. Expect anywere between 2 and 10 seconds to be spent here.
+Content retrieval means loading a website, waiting for javascript to load, parsing its content, and returning it. This speed can vary depending on the website being acted on and the level of anti-scraping measures used. Expect anywhere between 2 and 10 seconds to be spent here.
 
-Next is parsing, this is where LLM prompting comes into the equation. For every JSON value you request, we perform at least one (sometimes two) full passed through our multi-billion parameter model. We've gon through great lengths to make this lighting fast however, the more values you request and the more tokens for each value, the slower this will be. A simple single token string can be produced in less than 100 milliseconds and it can take several seconds to produce a list.
+Next is parsing. This is where LLM prompting comes into the equation. We perform at least one (sometimes two) full passes through our multi-billion parameter model for every JSON value you request. We've gone to great lengths to make this lighting fast; however, the more values you request and the more tokens for each value, the slower this will be. A simple single token string can be produced in less than 100 milliseconds, and it can take several seconds to produce a list.
 
-Furthermore, adding the [pattern](./prompting#pattern) attribute can significantly slow down response times whereas [options](./prompting#options) can significantly speed them up.
+Furthermore, adding the [pattern](./prompting#pattern) attribute can significantly slow down response times, whereas [options](./prompting#options) can significantly speed them up.
 
 ### Quality
-The quality of Isomeric output is only as good as the quality of your input. Please spend time reading the [prompting](./prompting) section to help design the best prompts.
+The quality of Isomeric output is only as good as the quality of your input. Please read the [prompting](./prompting) section to help design the best prompts.
 
-If you'd like to verify the quality of the output you can access the raw request content by passing `?content=true` in the request url and the raw result of the content retreival step will be returned to you.
+If you'd like to verify the quality of the output, you can access the raw request content by passing `?content=true` in the request URL and the raw result of the content retrieval step will be returned to you.
