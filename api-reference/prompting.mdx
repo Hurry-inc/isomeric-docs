@@ -1,6 +1,6 @@
 ---
 title: "Prompting"
-description: "Using Isomeric is like prompting an LLM because, behind every Isomeric prompt is an LLM trained on billions of tokens of website text."
+description: "Using Isomeric is like prompting an LLM. Behind every Isomeric prompt is an LLM trained on billions of tokens of website text."
 ---
 
 ## Prompt Overview
@@ -23,7 +23,7 @@ An Isomeric prompt is the JSON schema passed in the `format` key of your request
 
 ## Prompt Design
 
-Designing the right prompt is critical to extracting the right data. Our LLm proccesses your prompt from top to bottom and each key / value is it's own pass through the model including any previously generated data including. This means that generating a `title` before generating a `price` will get you a better result because the price being generated will be infered given the context of the title. 
+Designing the right prompt is critical to extracting the right data. Our LLM processes your prompt from top to bottom, and each key/value is its own pass through the model, including any previously generated data. This means that generating a `title` before generating a `price` will get you a better result because the price being generated will be inferred given the context of the title. 
 
 For example:
 ``` json
@@ -37,7 +37,7 @@ For example:
 }
 ```
 
-This prompt requests the price. Let's say you are getting the price of an item on Amazon. Typically there are many products (primary, related, frequently bought with) on a single page and this prompt does not clearly indicate which price you would like to extract so there is a hight likelyhood that the LLM will not get it right.
+This prompt requests the price. Let's say you are getting the price of an item on Amazon. Typically there are many products (primary, related, frequently bought with) on a single page, and this prompt does not clearly indicate which price you would like to extract, so there is a high likelihood that the LLM will not get it right.
 
 However, this prompt:
 
@@ -55,7 +55,7 @@ However, this prompt:
 }
 ```
 
-will run 2 full passes through the model. First to generate title and second to generate the price. When generating the price output the prompt sent to the model will actually be:
+will run two full passes through the model. First to generate the title and second to generate the price. When generating the `price` output the prompt sent to the model will actually be:
 
 ``` json
 {
@@ -63,11 +63,11 @@ will run 2 full passes through the model. First to generate title and second to 
   "price": "
 ```
 
-The model will continue generating from this point therefore the price will be strongly tied to the title.
+The model will continue generating from this point; therefore, the price will be strongly tied to the title.
 
-The best approach is to play around with your prompts with multiple sources (i.e. website urls) until you get the results you're looking for.
+The best approach is to play around with your prompts with multiple sources (i.e., website URLs) until you get the results you're looking for.
 
-Another approach to take for improved results is nesting. For example if you are looking for a `recipe` data it's best to make that your top level object. Like this:
+Another approach to take for improved results is nesting. For example, if you are looking for `recipe` data, it's best to make that your top-level object. Like this:
 
 ``` json
 {
@@ -114,7 +114,7 @@ Every key in a prompt needs a valid type. This will not only constrain the model
 
 ### String
 
-When you want a single string response use `string`. This is good for thigns like titles, descriptions, summaries, etc.
+When you want a single-string response, use `string`. This is good for things like titles, descriptions, summaries, etc.
 
 ``` json
 {
@@ -134,7 +134,7 @@ Will produce
 
 ### Number
 
-The `number` type will constrain the model to only generate a number as a result. Valid number examples are: `2`, `22`, `22.01`, `22.202`. The resulting JSON will be a numnber therefore *not* wrapped in quotes.
+The `number` type will constrain the model only to generate a number as a result. Valid number examples are: `2`, `22`, `22.01`, and `22.202`. The resulting JSON will be a number therefore *not* wrapped in quotes.
 
 ``` json
 {
@@ -154,7 +154,7 @@ Will produce
 
 ### Boolean
 
-`boolean` types will return only either `true` or `false`. This type is great for keys used to determin something like page type. For example:
+`boolean` types will return only `true` or `false`. This type is great for keys used to determine something like page type. For example:
 
 ``` json
 {
@@ -173,7 +173,7 @@ Will produce
 ```
 
 ### Object
-Isomeric objects are powerful prompt types that contain children types. These are important in both generating the output you desire as well as in designing prompt that will yeild the best results.
+Isomeric objects are powerful prompt types that contain children types. These are important in both generating the output you desire as well as in designing prompts that will yield the best results.
 
 Every `object` must have a `properties` key describing each property of the object.
 
@@ -277,7 +277,7 @@ You can add `max-items` to control how many items in the list you want generated
 ## Attributes
 
 ### Stop
-As mentioned, Isomeric is an LLM trained on billions of tokens of website data. For every key/value pair the model runs a full pass start to finish. Just like working with other LLM, you need to tell it when to stop generating new tokens. For every `type` specified above we have added a default stop sequence. You can override these by specifying your own via the `stop` key like so:
+As mentioned, Isomeric is an LLM trained on billions of tokens of website data. For every key/value pair, the model runs a full pass from start to finish. Just like working with other LLMs, you need to tell it when to stop generating new tokens. For every `type` specified above, we have added a default stop sequence. You can override these by specifying your own via the `stop` key like so:
 
 ``` json
 {
@@ -301,7 +301,7 @@ You can control how many tokens are generated per key with the `max-tokens` attr
 ```
 
 ### Pattern
-Pattern is a powerful took to use regular expressions giving you fine grained control of the output of the model. Remember that because this is being passed in as `json` you need to escape your escape characters too.
+`Pattern` is a powerful tool to use regular expressions giving you fine-grained control of the output of the model. Remember that because this is being passed in as `json` you need to escape your escape characters too.
 
 This is an example that will constrain the model to produce prices according to a strict format:
 
@@ -329,7 +329,7 @@ You can constrain the model to a list of options to choose from. For example, gi
 the model will only produce either `red`, `green`, or `blue`.
 
 ### Nullable
-`strings`, `numbers` and `booleans` can be marked as `nullable`. This is helpful to prevent the model from halucinating if a value does not exist on a website. In which case, a `nullable` type will return `null` instead of producing a halucinated value because no value exists.
+`strings`, `numbers`, and `booleans` can be marked as `nullable`. This is helpful to prevent the model from hallucinating if a value does not exist on a website. In which case, a `nullable` type will return `null` instead of producing a hallucinated value because no value exists.
 
 ``` json
 {
