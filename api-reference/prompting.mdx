@@ -1,0 +1,341 @@
+---
+title: "Prompting"
+description: "Using Isomeric is like prompting an LLM bescause, behind every Isomeric is an LLM trained on billions of tokens of website text."
+---
+
+## Prompt Overview
+
+An Isomeric prompt is the JSON schema passed in the `format` key of your request POST body. A valid Isomeric POST request body looks like this:
+
+``` json
+{
+  "url": "https://www.amazon.com/LEGO-Architecture-Collection-21034-Building/dp/B01KJENN0U/",
+  "prompt": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      }
+    }
+  }
+}
+```
+
+## Prompt Design
+
+Designing the right prompt is critical to extracting the right data. Our LLm proccesses your prompt from top to bottom and each key / value is it's own pass through the model including any previously generated data including. This means that generating a `title` before generating a `price` will get you a better result because the price being generated will be infered given the context of the title. 
+
+For example:
+``` json
+{
+  "type": "object",
+  "properties": {
+    "price": {
+      "type": "string"
+    }
+  }
+}
+```
+
+This prompt requests the price. Let's say you are getting the price of an item on Amazon. Typically there are many products (primary, related, frequently bought with) on a single page and this prompt does not clearly indicate which price you would like to extract so there is a hight likelyhood that the LLM will not get it right.
+
+However, this prompt:
+
+``` json
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "price": {
+      "type": "string"
+    }
+  }
+}
+```
+
+will run 2 full passes through the model. First to generate title and second to generate the price. When generating the price output the prompt sent to the model will actually be:
+
+``` json
+{
+  "title": "LEGO Architecture London Model 2201",
+  "price": "
+```
+
+The model will continue generating from this point therefore the price will be strongly tied to the title.
+
+The best approach is to play around with your prompts with multiple sources (i.e. website urls) until you get the results you're looking for.
+
+Another approach to take for improved results is nesting. For example if you are looking for a `recipe` data it's best to make that your top level object. Like this:
+
+``` json
+{
+  "type": "object",
+  "properties": {
+    "recipe": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array"
+          "items": {
+            "type": "object"
+            "properties": {
+              "ingredient": {
+                "type": "string",
+              },
+              "measure": {
+                "type": "string",
+              }
+              "amount": {
+                "type": "number",
+              }
+            }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Types
+
+Every key in a prompt needs a valid type. This will not only constrain the model to generate that type, it will also instruct the model on how to generate responses based on the type.
+
+### String
+
+When you want a single string response use `string`. This is good for thigns like titles, descriptions, summaries, etc.
+
+``` json
+{
+  "first_name": {
+    "type": "string"
+  }
+}
+```
+
+Will produce
+
+``` json
+{
+  "first_name": "Kelley"
+}
+```
+
+### Number
+
+The `number` type will constrain the model to only generate a number as a result. Valid number examples are: `2`, `22`, `22.01`, `22.202`. The resulting JSON will be a numnber therefore *not* wrapped in quotes.
+
+``` json
+{
+  "amunt": {
+    "type": "number"
+  }
+}
+```
+
+Will produce
+
+``` json
+{
+  "amount": 22
+}
+```
+
+### Boolean
+
+`boolean` types will return only either `true` or `false`. This type is great for keys used to determin something like page type. For example:
+
+``` json
+{
+  "is_product_detail_page": {
+    "type": "boolean"
+  }
+}
+```
+
+Will produce
+
+``` json
+{
+  "is_product_detail_page": true
+}
+```
+
+### Object
+Isomeric objects are powerful prompt types that contain children types. These are important in both generating the output you desire as well as in designing prompt that will yeild the best results.
+
+Every `object` must have a `properties` key describing each property of the object.
+
+For example:
+``` json
+{
+  "contact_details": {
+    "type": "object",
+    "properties": {
+      "first_name": {
+        "type": "string"
+      },
+      "last_name": {
+        "type": "string"
+      },
+      "email": {
+        "type": "string"
+      },
+      "phone": {
+        "type": "string"
+      }
+    }
+  }
+}
+```
+
+Will produce
+
+``` json
+{
+  "contact_details": {
+    "first_name": "Kelley",
+    "last_name": "Morris",
+    "email": "kmorris92@bayside-high.edu"
+    "phone": "310-555-5252"
+  }
+}
+```
+
+### Array
+
+Isomeric can produce lists of content. Every `array` type must have an `items` attribute describing each item of the array. Let's use reviews as an example.
+
+``` json
+{
+  "reviews": {
+    "type": "array",
+    "items": {
+      "type": "object"
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "review": {
+          "type": "string"
+        },
+        "sentiment": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+```
+
+Will produce
+
+``` json
+{
+  "reviews": [{
+    "date": "12-16-1986",
+    "author": "Zack Morris",
+    "reviews": "Bayside High is far out.",
+    "sentiment": "positive",
+  }, {
+    "date": "12-15-1986",
+    "author": "Kelley Kapowski",
+    "reviews": "High school at Bayside was a dream come true.",
+    "sentiment": "positive",
+  }]
+}
+```
+
+#### Max Items
+
+You can add `max-items` to control how many items in the list you want generated. This can be specified like so:
+
+``` json
+{
+  "similar_products": {
+    "type": "array",
+    "max_items": 4,
+    "items": {...}
+  }
+}
+```
+
+## Attributes
+
+### Stop
+As mentioned, Isomeric is an LLM trained on billions of tokens of website data. For every key/value pair the model runs a full pass start to finish. Just like working with other LLM, you need to tell it when to stop generating new tokens. For every `type` specified above we have added a default stop sequence. You can override these by specifying your own via the `stop` key like so:
+
+``` json
+{
+  "email_inbox": {
+    "type": "string",
+    "stop": "@"
+  }
+}
+```
+
+### Max Tokens
+You can control how many tokens are generated per key with the `max-tokens` attribute like so:
+
+``` json
+{
+  "title": {
+    "type": "string",
+    "max-tokens": 10
+  }
+}
+```
+
+### Pattern
+Pattern is a powerful took to use regular expressions giving you fine grained control of the output of the model. Remember that because this is being passed in as `json` you need to escape your escape characters too.
+
+This is an example that will constrain the model to produce prices according to a strict format:
+
+``` json
+{
+  "price": {
+    "type": "string",
+    "pattern": "\\d+\\.\\d{2}"
+  }
+}
+```
+
+### Options
+You can constrain the model to a list of options to choose from. For example, given the following prompt:
+
+``` json
+{
+  "color": {
+    "type": "string",
+    "options": ["red", "green", "blue"]
+  }
+}
+```
+
+the model will only produce either `red`, `green`, or `blue`.
+
+### Nullable
+`strings`, `numbers` and `booleans` can be marked as `nullable`. This is helpful to prevent the model from halucinating if a value does not exist on a website. In which case, a `nullable` type will return `null` instead of producing a halucinated value because no value exists.
+
+``` json
+{
+  "color": {
+    "type": "string",
+    "nullable": true
+  }
+}
+```
