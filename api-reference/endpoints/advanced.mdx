@@ -1,7 +1,7 @@
 ---
 title: "Advanced Extraction"
 api: "POST https://api-preview.isomeric.ai/advanced"
-description: "This endpoint extracts arbitrary data based on the schema provided"
+description: "Use the advanced endpoint to design your own prompt for transforming website text into structured JSON."
 ---
 
 ### Headers
@@ -14,18 +14,29 @@ description: "This endpoint extracts arbitrary data based on the schema provided
   Use your API key to authenticate the request.
 </ParamField>
 
+### Params
+
+<ParamField body="Query Parameters" type="object" children="Optional additional query parameters.">
+  <Expandable title="Toggle object">
+    <ParamField body="include_content" type="string">
+      Set to `1` to return the raw content from the target website
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
 ### Body
 
 <ParamField body="JSON request" type="object" required="true" children="A JSON object representing the request you are making to the Isomeric extraction engine.">
   <Expandable title="Toggle object">
     <ParamField body="url" type="string" required="true">
-      The URL of the product page you'd like to extract data from.
+      The URL of the page you'd like to extract data from.
     </ParamField>
 
-    <ParamField body="format" type="object" required="true">
-      The schema representing the data you would like extracted.
+    <ParamField body="prompt" type="object" required="true">
+      The JSON schema representing the data you would like extracted.
 
-      See our [guide on writing schemas](/#todo) for more info.
+      See our [guide on prompt design](./api-reference/prompting) for more info.
     </ParamField>
 
   </Expandable>
@@ -63,21 +74,20 @@ The data returned from the extraction request.
 ```bash Example Request
 curl -H "Authorization: Bearer <token>" -d '{
     "url": "https://auraframes.com/digital-frames/color/carver-mat",
-    "format": {
+    "prompt": {
         "type": "object",
         "properties": {
             "title": { "type": "string" },
             "brand": { "type": "string" },
             "price": {
                 "type": "string",
-                "prompt": "the price of the product. 'None' if it does not exist in the input"
+                "pattern": "\\d+\\.\\d{2}"
             },
             "currency_code": {
                 "type": "string"
             },
             "color": {
                 "type": "string",
-                "prompt": "The color of the product. 'None' if it does not exist in the input."
             }
         }
     }
@@ -97,7 +107,7 @@ curl -H "Authorization: Bearer <token>" -d '{
     "brand": "Aura",
     "color": "Gravel with White Mat",
     "currency_code": "USD",
-    "price": "179",
+    "price": "179.00",
     "title": "Carver Mat"
   }
 }
