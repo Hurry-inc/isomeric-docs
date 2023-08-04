@@ -40,6 +40,7 @@
     {
       "group": "Data Extraction",
       "pages": [
+        "api-reference/endpoints/extract",
         "api-reference/endpoints/price",
         "api-reference/endpoints/advanced",
         "api-reference/endpoints/credits"
