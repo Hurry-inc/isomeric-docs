@@ -1,0 +1,92 @@
+---
+title: "[WIP] Get Request Status"
+api: "GET https://api-preview.isomeric.ai/request-status/:id"
+description: "This endpoint returns the status of an `/extract` request"
+---
+
+### Headers
+
+<ParamField
+  header="Authorization"
+  required="true"
+  initialValue="Bearer iso_abc123"
+>
+  Use your API key to authenticate the request.
+</ParamField>
+
+### Body
+
+<ParamField body="url" type="string" required="true">
+  The URL of the product page you'd like to extract data from.
+</ParamField>
+
+### Response
+
+<ResponseField name="credits" type="object">
+  Info about API credit usage for this request.
+
+  <Expandable title="Toggle object">
+    <ResponseField name="remaining" type="number">
+      The number of credits remaining after this call
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="data" type="object">
+
+The data returned from the extraction request.
+
+{" "}
+
+<Expandable title="Toggle object">
+  <ResponseField name="result" type="object">
+    <Expandable title="Toggle object">
+      <ResponseField name="product" type="object">
+        <Expandable title="Toggle object">
+          <ResponseField name="brand" type="string">
+            The product brand
+          </ResponseField>
+          <ResponseField name="title" type="string">
+            The product name or title
+          </ResponseField>
+          <ResponseField name="price" type="number">
+            The product price
+          </ResponseField>
+        </Expandable>
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+</Expandable>
+
+</ResponseField>
+
+<RequestExample>
+
+```bash Example Request
+curl -s 'https://api-preview.isomeric.ai/price' \
+-H 'Authorization: Bearer <token>' \
+-d 'url=https://www.lego.com/en-us/product/ninjago-city-markets-71799'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "credits": {
+    "remaining": 198
+  },
+  "data": {
+    "result": {
+      "product": {
+        "brand": "LEGO®",
+        "price": "369.99",
+        "title": "NINJAGO® City Markets"
+      }
+    }
+  }
+}
+```
+
+</ResponseExample>
