@@ -22,6 +22,10 @@ description: "Use this endpoint to design your own prompt for transforming websi
       Set to `1` to return the raw content from the target website
     </ParamField>
 
+    <ParamField body="mode" type="string">
+      Set to `sync` to have results returned synchronously, instead of using async jobs. Note that complex prompts may result in timeouts or incomplete data when using this option.
+    </ParamField>
+
   </Expandable>
 </ParamField>
 
