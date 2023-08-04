@@ -58,9 +58,18 @@ description: "Use this endpoint to design your own prompt for transforming websi
   </Expandable>
 </ResponseField>
 
+<ResponseField name="requestUUID" type="string">
+    The UUID of the request (job) which you can use to poll status.
+
+    Note: Only present when the `mode` is not `sync`.
+
+</ResponseField>
+
 <ResponseField name="data" type="object">
 
 The data returned from the extraction request.
+
+Note: only present when `mode` is `sync`.
 
 {" "}
 
