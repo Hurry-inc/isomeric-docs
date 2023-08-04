@@ -29,27 +29,14 @@ description: "This endpoint returns the status of an `/extract` request"
 
 <ResponseField name="data" type="object">
 
-The data returned from the extraction request, which is identical to that from `/advanced`
+The data returned from the extraction request, which is identical to that from `/extract`
 
 {" "}
 
 <Expandable title="Toggle object">
-  <ResponseField name="result" type="object">
-    <Expandable title="Toggle object">
-      <ResponseField name="product" type="object">
-        <Expandable title="Toggle object">
-          <ResponseField name="brand" type="string">
-            The product brand
-          </ResponseField>
-          <ResponseField name="title" type="string">
-            The product name or title
-          </ResponseField>
-          <ResponseField name="price" type="number">
-            The product price
-          </ResponseField>
-        </Expandable>
-      </ResponseField>
-    </Expandable>
+  <ResponseField name="keys..." type="object">
+    The `data` field will contain a JSON object with keys and values mapped to
+    your original schema.
   </ResponseField>
 </Expandable>
 
@@ -58,9 +45,8 @@ The data returned from the extraction request, which is identical to that from `
 <RequestExample>
 
 ```bash Example Request
-curl -s 'https://api-preview.isomeric.ai/price' \
+curl -s 'https://api-preview.isomeric.ai/request-status/36099fab-4771-4ea6-bd97-fa6152b9970d' \
 -H 'Authorization: Bearer <token>' \
--d 'url=https://www.lego.com/en-us/product/ninjago-city-markets-71799'
 ```
 
 </RequestExample>
@@ -69,18 +55,7 @@ curl -s 'https://api-preview.isomeric.ai/price' \
 
 ```json Response
 {
-  "credits": {
-    "remaining": 198
-  },
-  "data": {
-    "result": {
-      "product": {
-        "brand": "LEGO®",
-        "price": "369.99",
-        "title": "NINJAGO® City Markets"
-      }
-    }
-  }
+  "status": "inflight"
 }
 ```
 
