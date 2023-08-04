@@ -14,7 +14,7 @@ description: "This endpoint returns the status of an `/extract` request"
   Use your API key to authenticate the request.
 </ParamField>
 
-### Params
+### URL Path Params
 
 <ParamField body=":id" type="string" required="true">
   The request (job) ID returned from your call to `/extract`
@@ -22,19 +22,14 @@ description: "This endpoint returns the status of an `/extract` request"
 
 ### Response
 
-<ResponseField name="credits" type="object">
-  Info about API credit usage for this request.
-
-  <Expandable title="Toggle object">
-    <ResponseField name="remaining" type="number">
-      The number of credits remaining after this call
-    </ResponseField>
-  </Expandable>
+<ResponseField name="status" type="object">
+  The status of the requested request (job). Values will be one of `completed`,
+  `inflight`, `failed`. In flight requests are still being processed.
 </ResponseField>
 
 <ResponseField name="data" type="object">
 
-The data returned from the extraction request.
+The data returned from the extraction request, which is identical to that from `/advanced`
 
 {" "}
 
