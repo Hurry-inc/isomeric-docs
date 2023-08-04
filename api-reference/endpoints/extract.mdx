@@ -41,6 +41,8 @@ description: "Use this endpoint to design your own prompt for transforming websi
       The JSON schema representing the data you would like extracted.
 
       See our [guide on prompt design](/api-reference/prompting) for more info.
+
+      Also note that while standard JSON does not guarantee key order within objects, with Isomeric prompt design, we ensure the order of your keys is passed through to our inference engine as-is. This is because the order of keys can often influence the quality of data extraction.
     </ParamField>
 
   </Expandable>
