@@ -27,9 +27,18 @@ description: "This endpoint returns the status of an `/extract` request. You may
   `inflight`, `failed`. In flight requests are still being processed.
 </ResponseField>
 
+<ResponseField name="requestUUID" type="string">
+    The UUID of the request (job) which you can use to poll status.
+
+    Note: Only present when the `mode` is not `sync`.
+
+</ResponseField>
+
 <ResponseField name="data" type="object">
 
 The data returned from the extraction request, which is identical to that from `/extract`. Only present when the request status is `completed`.
+
+Note: Only present when the `mode` is `sync`.
 
 {" "}
 
