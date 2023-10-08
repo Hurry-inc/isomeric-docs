@@ -5,7 +5,7 @@
     "dark": "/logo/logo.svg",
     "light": "/logo/logo.svg"
   },
-  "favicon": "https://framerusercontent.com/modules/uRn3zMRHQ1SiPd5N1lQF/TTJVqiAaLdm8X0ZZkzbf/assets/OTtoAGe6iU8TQ6lKT4Yfa2zS1Cc.png",
+  "favicon": "/favicon.png",
   "colors": {
     "primary": "#12A7D3",
     "light": "#81D7F7",
@@ -40,11 +40,7 @@
     {
       "group": "Data Extraction",
       "pages": [
-        "api-reference/endpoints/extract",
-        "api-reference/endpoints/request-status",
-        "api-reference/endpoints/price",
-        "api-reference/endpoints/advanced",
-        "api-reference/endpoints/credits"
+        "api-reference/endpoints/generate"
       ]
     }
   ],

@@ -1,0 +1,103 @@
+---
+title: "Generate Data From HTML"
+api: "POST https://api.isomeric.ai/generate"
+description: "Use this endpoint to design your own prompt for transforming website text into structured JSON."
+---
+
+### Headers
+
+<ParamField
+  header="Authorization"
+  required="true"
+  initialValue="Bearer 11111111-1111-1111-1111-111111111111"
+>
+  Use your API key to authenticate the request.
+</ParamField>
+
+### Params
+
+<ParamField body="Query Parameters" type="object" children="Optional additional query parameters.">
+  <Expandable title="Toggle object">
+
+    <ParamField body="mode" type="string">
+      This request, by default, is synchronous. You can stream the response by setting `mode` to `stream`
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
+### Body
+
+<ParamField body="JSON request" type="object" required="true" children="A JSON object representing the request you are making to the Isomeric extraction engine.">
+  <Expandable title="Toggle object">
+    <ParamField body="url" type="string" required="true">
+      The URL of the page you'd like to extract data from.
+    </ParamField>
+
+    <ParamField body="html" type="string" required="true">
+      If you prefer to get the page html yourself and pass that as a value you may do so by setting it to `html`. If `html` is set, the 'url' is ignored and our scraper will not be invoked.
+    </ParamField>
+
+    <ParamField body="schema" type="object" required="true">
+      The JSON schema representing the data you would like extracted.
+
+      See our [guide on prompt design](/api-reference/prompting) for more info.
+
+      Also note that while standard JSON does not guarantee key order within objects, with Isomeric prompt design, we ensure the order of your keys is passed through to our inference engine as-is. This is because the order of keys can often influence the quality of data extraction.
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
+### Response
+
+The response will be the exact `json` you specified in the `schema` key of your request unless you set `mode` to `stream`.
+
+#### Streaming
+
+Streaming mode will send an SSE data event whenever a new token or set of tokens is generated.
+
+<RequestExample>
+
+```bash Example Request
+curl -H "Authorization: Bearer <token>" -d '{
+    "url": "https://auraframes.com/digital-frames/color/carver-mat",
+    "schema": {
+        "product": {
+            "type": "object",
+            "properties": {
+                "title": { "type": "string" },
+                "brand": { "type": "string" },
+                "price": {
+                    "type": "string",
+                    "pattern": "\\d+\\.\\d{2}"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string",
+                }
+            }
+        }
+    }
+}' https://api-preview.isomeric.ai/extract
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "product": {
+    "brand": "Aura",
+    "color": "Gravel with White Mat",
+    "currency_code": "USD",
+    "price": "179.00",
+    "title": "Carver Mat"
+  }
+}
+```
+
+</ResponseExample>
