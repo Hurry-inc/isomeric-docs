@@ -14,28 +14,12 @@ description: "Use this endpoint to design your own prompt for transforming websi
   Use your API key to authenticate the request.
 </ParamField>
 
-### Params
-
-<ParamField body="Query Parameters" type="object" children="Optional additional query parameters.">
-  <Expandable title="Toggle object">
-
-    <ParamField body="mode" type="string">
-      This request, by default, is synchronous. You can stream the response by setting `mode` to `stream`
-    </ParamField>
-
-  </Expandable>
-</ParamField>
-
 ### Body
 
 <ParamField body="JSON request" type="object" required="true" children="A JSON object representing the request you are making to the Isomeric extraction engine.">
   <Expandable title="Toggle object">
-    <ParamField body="url" type="string" required="true">
-      The URL of the page you'd like to extract data from.
-    </ParamField>
-
-    <ParamField body="html" type="string" required="true">
-      If you prefer to get the page html yourself and pass that as a value you may do so by setting it to `html`. If `html` is set, the 'url' is ignored and our scraper will not be invoked.
+    <ParamField body="text" type="string" required="true">
+      The text for which you want to extract data from
     </ParamField>
 
     <ParamField body="schema" type="object" required="true">
@@ -53,15 +37,11 @@ description: "Use this endpoint to design your own prompt for transforming websi
 
 The response will be the exact `json` you specified in the `schema` key of your request unless you set `mode` to `stream`.
 
-#### Streaming
-
-Streaming mode will send an SSE data event whenever a new token or set of tokens is generated.
-
 <RequestExample>
 
 ```bash Example Request
 curl -H "Authorization: Bearer <token>" -d '{
-    "url": "https://auraframes.com/digital-frames/color/carver-mat",
+    "text": [INPUT TEXT],
     "schema": {
         "product": {
             "type": "object",
@@ -69,8 +49,7 @@ curl -H "Authorization: Bearer <token>" -d '{
                 "title": { "type": "string" },
                 "brand": { "type": "string" },
                 "price": {
-                    "type": "string",
-                    "pattern": "\\d+\\.\\d{2}"
+                    "type": "number",
                 },
                 "currency_code": {
                     "type": "string"

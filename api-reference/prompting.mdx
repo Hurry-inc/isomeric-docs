@@ -1,19 +1,22 @@
 ---
 title: "Prompting"
-description: "Using Isomeric is like prompting an LLM. Behind every Isomeric prompt is an LLM trained on billions of tokens of website text."
+description: "Using Isomeric is like prompting an LLM. Behind every Isomeric prompt is an LLM trained on billions of tokens of text."
 ---
 
 ## Prompt Overview
 
-An Isomeric prompt is the JSON schema passed in the `format` key of your request POST body. A valid Isomeric POST request body looks like this:
+An Isomeric prompt is the JSON schema passed in the `schema` key of your request POST body. Each schema strictly follows the [JSON Schema spec](https://json-schema.org/).
+
+A valid Isomeric POST request body looks like this:
 
 ``` json
 {
-  "url": "https://www.amazon.com/LEGO-Architecture-Collection-21034-Building/dp/B01KJENN0U/",
-  "prompt": {
+  "text": [YOUR INPUT TEXT],
+  "schema": {
     "type": "object",
     "properties": {
       "title": {
+        "description": "The title of the main product described in the text",
         "type": "string"
       }
     }
@@ -31,7 +34,8 @@ For example:
   "type": "object",
   "properties": {
     "price": {
-      "type": "string"
+      "description": "Dollar and cents representation of the price of the main product in the provided text",
+      "type": "number"
     }
   }
 }
@@ -103,6 +107,21 @@ Another approach to take for improved results is nesting. For example, if you ar
           }
         }
       }
+    }
+  }
+}
+```
+## Descriptions
+
+The `description` value is the most powerful value to consider when designing your prompt. This informs the LLM what data specifically you're looking for. Use plain english when describing the data definition. For example:
+
+``` json
+{
+  "type": "object"
+  "properties": {
+    "shipping": {
+      "description": "The total calculated shipping costs of all items in the user's shopping cart represented in dollars and cents."
+      "type": "number"
     }
   }
 }
